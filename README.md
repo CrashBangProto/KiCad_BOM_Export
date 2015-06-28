@@ -13,7 +13,7 @@ This is a simple script process the KiCad intermediate netlist file, and produce
    -h / help   Display Help message
    -g / group  Group like components into a single row
    -i / input  Input file (in KiCad's intermediate XML format)
-   -o / output Output file name (will be appended with .CSV and .XML)
+   -o / output Output file name (will be appended with .CSV and .XML).  If none specified, output file is input file + "_BOM"
    -f          Use the FindChips API
    -a / apikey The API Key from the online costing service
 
@@ -22,10 +22,10 @@ This is a simple script process the KiCad intermediate netlist file, and produce
   - Open EESchema
   - TOOLS menu / Generate Bill of Materials
   - Add a new item with a cmd line similar to:
-    python "[path to python script]KiCadBomExport.py" "%I" "%O" [other cmd line params]
+    python "[path to python script]KiCadBomExport.py" "-i %I" [other cmd line params]
     
-    eg: python "c:\KiCadBomExport.py" "%I" "%O" -g -f -a xxxxxxxx
-    
+    eg: python "c:\KiCadBomExport.py" -i "%I" -g -f -a xxxxxxxx
+    Suggest you don't use the standard "%O" output file parameter, or the .xml output will overwrite the intermediate Netlist file.
 
 ###Usage with SupplyFrame's FindChips API
 You need to request an API from SupplyFrame.  Go to: http://dev.supplyframe.com/

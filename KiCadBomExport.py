@@ -32,8 +32,8 @@
 #       - Open EESchema
 #       - TOOLS menu / Generate Bill of Materials
 #       - Add a new item with a cmd line similar to:
-#           python "<<path to python script>>KiCadBomExport.py" "%I" "%O" <<other cmd line params>>
-#
+#           python "<<path to python script>>KiCadBomExport.py" -i "%I" <<other cmd line params>>
+#       (suggest you don't use the "%O" output file parameter in order to prevent intermediate netlist file being overwritten)
 #
 #   Troubleshooting:
 #   - A log file is created in user home directory
@@ -89,10 +89,10 @@ listOutput = [] #Stores components once processed
 curPart = {} #elements of the current part being processed
 
 #Create a Log File in the user home directory
-logFile = expanduser("~") + '\\Kicad_BOM_Logging.txt'
+logFile = os.path.join(expanduser("~"), 'Kicad_BOM_Logging.txt')
 logging.basicConfig(filename=logFile, filemode='w', level = 'INFO', format='%(asctime)-15s %(levelname)-10s %(message)s')
 logger = logging.getLogger('Standard')
-logger.info('\r\n----------------------------\r\n')
+logger.info('\n----------------------------\n')
 logger.info('Script Started')
 
 
@@ -399,7 +399,7 @@ def printUsage():
     print("Export a KiCad netlist to CSV and XML formats")
     print("---------------------------------------------")
     print("usage: -i <Input FName> -o <Output FName> -a <API Key> -f -d")
-    print("\r\n-f:\tUse the FindChips online pricing engine")
+    print("\n-f:\tUse the FindChips online pricing engine")
     print("-g:\tGroup duplicate parts into a single entry")
     print("<Input FName>:\tPath and filename of netlist")
     print("<Output FName>:\tOutput path and filename (no extension) for XML ans CSV")
@@ -424,13 +424,13 @@ def checkParams(fileIn):
     if fileIn == '':
         logger.error('No INPUT Filename was specified')
         printUsage()
-        print("\r\n***ERROR*** Input Filename missing");
+        print("\n***ERROR*** Input Filename missing");
         sys.exit(2)
 
     if os.path.isfile(fileIn) == False:
         logger.error('The INPUT file does not exist: %s', fileIn) 
         printUsage()
-        print("\r\n***ERROR*** Input File does not exist: " + fileIn)
+        print("\n***ERROR*** Input File does not exist: " + fileIn)
         sys.exit(2)
 
 
@@ -438,7 +438,7 @@ def checkParams(fileIn):
     if (pricingService == 'F' or pricingService == 'O') and len(apiKey) == 0:
         logger.error('Have asked for online pricing %s but no API Key given.', pricingService) 
         printUsage()
-        print('\r\n***ERROR*** Have asked for online pricing %s but no API Key given.', pricingService)
+        print('\n***ERROR*** Have asked for online pricing %s but no API Key given.', pricingService)
         sys.exit(2)
         
 
