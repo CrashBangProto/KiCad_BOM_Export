@@ -180,7 +180,13 @@ def main(argv):
     with open(fileOut+'.csv', 'wb') as fOut:
         csvWriter = csv.DictWriter(fOut, delimiter = ',', fieldnames = CSVFieldNames)
         csvWriter.writeheader()
-        csvWriter.writerows(listOutput)
+        utf8Output = []
+        for row in listOutput:
+            utf8Row = {}
+            for key in row:
+                utf8Row[key] = row[key].encode('utf-8')
+            utf8Output.append(utf8Row)
+        csvWriter.writerows(utf8Output)
 
     #Print and Log the file creation
     print('Created CSV File')
@@ -199,9 +205,9 @@ def main(argv):
         #Loop through each attribute of the component.
         #  We do it this way, in order to preserve order of elements - more logical output
         for key in CSVFieldNames:
-            if str(key) in listItem:
-                attribute = SubElement(child, str(key).replace(' ','_').replace('&','_'))    #XML doesn't like spaces in element names, so replace them with "_"
-                attribute.text = str(listItem[key])
+            if key in listItem:
+                attribute = SubElement(child, key.replace(' ','_').replace('&','_'))    #XML doesn't like spaces in element names, so replace them with "_"
+                attribute.text = listItem[key]
         
     #Output to XML file
     ET = ElementTree(parent)
