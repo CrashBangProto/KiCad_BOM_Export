@@ -274,16 +274,16 @@ def processComponent(listOutput, xmlComponent, groupParts):
                     listItem['Count'] = str(int(listItem['Count']) + 1) #Increase the count of times this part is used
                     break
 
-                #No Manufac Part No - so de-dup on Value and Footprint
-                elif listItem['Value'] == curPart['Value'] and listItem['Footprint'] == curPart['Footprint']:
-                    bDup = True
-                    listItem['Reference'] = listItem['Reference'] + ';' + curPart['Reference']  #Add current part reference to the existing part
-                    listItem['Value'] = listItem['Value'] + ';' + curPart['Value']  #Add current part value to the existing part
-                    listItem['Count'] = str(int(listItem['Count']) + 1) #Increase the count of times this part is used
-                    #
-                    #  Future Development: merge in other fields here as well
-                    #
-                    break
+            #No Manufac Part No - so de-dup on Value and Footprint
+            elif listItem['Value'] == curPart['Value'] and listItem['Footprint'] == curPart['Footprint']:
+                bDup = True
+                listItem['Reference'] = listItem['Reference'] + ';' + curPart['Reference']  #Add current part reference to the existing part
+                listItem['Value'] = listItem['Value']
+                listItem['Count'] = str(int(listItem['Count']) + 1) #Increase the count of times this part is used
+                #
+                #  Future Development: merge in other fields here as well
+                #
+                break
 
     #If no duplicates found, then add this as a new component
     if bDup == False:
