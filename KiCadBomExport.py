@@ -1,3 +1,4 @@
+#!/usr/bin/env python2
 ####################################################
 #
 #  KiCad BOM Converter and Coster
