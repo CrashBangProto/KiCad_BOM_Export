@@ -1,3 +1,4 @@
+#!/usr/bin/env python2
 ####################################################
 #
 #  KiCad BOM Converter and Coster
@@ -179,7 +180,13 @@ def main(argv):
     with open(fileOut+'.csv', 'wb') as fOut:
         csvWriter = csv.DictWriter(fOut, delimiter = ',', fieldnames = CSVFieldNames)
         csvWriter.writeheader()
-        csvWriter.writerows(listOutput)
+        utf8Output = []
+        for row in listOutput:
+            utf8Row = {}
+            for key in row:
+                utf8Row[key] = row[key].encode('utf-8')
+            utf8Output.append(utf8Row)
+        csvWriter.writerows(utf8Output)
 
     #Print and Log the file creation
     print('Created CSV File')
@@ -198,9 +205,9 @@ def main(argv):
         #Loop through each attribute of the component.
         #  We do it this way, in order to preserve order of elements - more logical output
         for key in CSVFieldNames:
-            if str(key) in listItem:
-                attribute = SubElement(child, str(key).replace(' ','_').replace('&','_'))    #XML doesn't like spaces in element names, so replace them with "_"
-                attribute.text = str(listItem[key])
+            if key in listItem:
+                attribute = SubElement(child, key.replace(' ','_').replace('&','_'))    #XML doesn't like spaces in element names, so replace them with "_"
+                attribute.text = listItem[key]
         
     #Output to XML file
     ET = ElementTree(parent)
@@ -267,16 +274,16 @@ def processComponent(listOutput, xmlComponent, groupParts):
                     listItem['Count'] = str(int(listItem['Count']) + 1) #Increase the count of times this part is used
                     break
 
-                #No Manufac Part No - so de-dup on Value and Footprint
-                elif listItem['Value'] == curPart['Value'] and listItem['Footprint'] == curPart['Footprint']:
-                    bDup = True
-                    listItem['Reference'] = listItem['Reference'] + ';' + curPart['Reference']  #Add current part reference to the existing part
-                    listItem['Value'] = listItem['Value'] + ';' + curPart['Value']  #Add current part value to the existing part
-                    listItem['Count'] = str(int(listItem['Count']) + 1) #Increase the count of times this part is used
-                    #
-                    #  Future Development: merge in other fields here as well
-                    #
-                    break
+            #No Manufac Part No - so de-dup on Value and Footprint
+            elif listItem['Value'] == curPart['Value'] and listItem['Footprint'] == curPart['Footprint']:
+                bDup = True
+                listItem['Reference'] = listItem['Reference'] + ';' + curPart['Reference']  #Add current part reference to the existing part
+                listItem['Value'] = listItem['Value']
+                listItem['Count'] = str(int(listItem['Count']) + 1) #Increase the count of times this part is used
+                #
+                #  Future Development: merge in other fields here as well
+                #
+                break
 
     #If no duplicates found, then add this as a new component
     if bDup == False:
