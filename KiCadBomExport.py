@@ -270,7 +270,8 @@ def processComponent(listOutput, xmlComponent, groupParts):
                 if listItem[fldMfgPartNo] == curPart[fldMfgPartNo] and curPart[fldMfgPartNo] != '-':
                     bDup = True
                     listItem['Reference'] = listItem['Reference'] + ';' + curPart['Reference']  #Add current part reference to the existing part
-                    listItem['Value'] = listItem['Value'] + ';' + curPart['Value']  #Add current part value to the existing part
+                    if listItem['Value'] != curPart['Value']: 
+                        listItem['Value'] = listItem['Value'] + ';' + curPart['Value']  #Add current part value to the existing part
                     listItem['Count'] = str(int(listItem['Count']) + 1) #Increase the count of times this part is used
                     break
 
