@@ -71,7 +71,7 @@ from xml.etree.ElementTree import Element, SubElement, ElementTree
 
 
 #List of initial field names for our CSV file - is expanded as we go.
-CSVFieldNames = ['Reference','Value','Footprint','Count']
+CSVFieldNames = ['Reference','Value','Footprint','Count','Datasheet']
 
 #These are the XML Tags used in the KiCad intermediate netlist file.  Declared here for ease of maintenance
 tagComponent = 'components'
@@ -79,6 +79,7 @@ tagRef = 'ref'
 tagValue = 'value'
 tagFootprint = 'footprint'
 tagFields = 'fields'
+tagDatasheet = 'datasheet'
 
 fldMfgPartNo = 'Mfg_Part_No'
 
@@ -252,6 +253,7 @@ def processComponent(listOutput, xmlComponent, groupParts):
     #Component Value
     if xmlComponent.find(tagValue) != None: curPart['Value'] = xmlComponent.find(tagValue).text
     if xmlComponent.find(tagFootprint) != None: curPart['Footprint'] = xmlComponent.find(tagFootprint).text
+    if xmlComponent.find(tagDatasheet) != None: curPart['Datasheet'] = xmlComponent.find(tagDatasheet).text
     curPart['Count'] = '1'
         
 
