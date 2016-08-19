@@ -51,12 +51,6 @@
 #   License: GNU General Public License v3.0
 #       http://www.gnu.org/licenses/gpl-3.0.html
 
-
-
-
-
-
-
 import csv
 import sys
 import os
@@ -178,7 +172,7 @@ def main(argv):
 
     ########################################################
     #Generate the Output CSV File
-    with open(fileOut+'.csv', 'wb') as fOut:
+    with open(fileOut + '.csv', 'wb') as fOut:
         csvWriter = csv.DictWriter(fOut, delimiter = ',', fieldnames = CSVFieldNames)
         csvWriter.writeheader()
         utf8Output = []
@@ -226,10 +220,6 @@ def main(argv):
     ########################################################
     
 
-
-
-
-
 ########################################################
 #
 #  Routine to process a single component from KiCad XML Netlist
@@ -252,7 +242,11 @@ def processComponent(listOutput, xmlComponent, groupParts):
 
     #Component Value
     if xmlComponent.find(tagValue) != None: curPart['Value'] = xmlComponent.find(tagValue).text
-    if xmlComponent.find(tagFootprint) != None: curPart['Footprint'] = xmlComponent.find(tagFootprint).text
+    if xmlComponent.find(tagFootprint) != None:
+      fieldValue = xmlComponent.find(tagFootprint).text.split(':')
+      curPart[addCSVField('FootprintLib')] = fieldValue[0]
+      curPart['Footprint'] = fieldValue[1]
+      
     if xmlComponent.find(tagDatasheet) != None: curPart['Datasheet'] = xmlComponent.find(tagDatasheet).text
     curPart['Count'] = '1'
         
@@ -292,8 +286,11 @@ def processComponent(listOutput, xmlComponent, groupParts):
     if bDup == False:
         listOutput.append(curPart)
 
+def addCSVField(fieldName):
+    if not(fieldName in CSVFieldNames): CSVFieldNames.append(fieldName)
+    return fieldName
 
-    
+        
 ########################################################
 #
 #  Routine to process fields for a specific component:
@@ -317,10 +314,9 @@ def processFields(xmlFields, curPart):
         curPart[fieldName] = fieldValue #Add to the current part
 
         #Check if this field name is in the Master list.  If not, add it
-        if not(fieldName in CSVFieldNames): CSVFieldNames.append(fieldName)
+        addCSVField(fieldName)
+        
     
-
-
 ########################################################
 #
 #  Routine to get pricing for parts from online service
