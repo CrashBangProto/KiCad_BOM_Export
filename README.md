@@ -22,9 +22,9 @@ This is a simple script process the KiCad intermediate netlist file, and produce
   - Open EESchema
   - TOOLS menu / Generate Bill of Materials
   - Add a new item with a cmd line similar to:
-    python "[path to python script]KiCadBomExport.py" "-i %I" [other cmd line params]
+    ```python "[path to python script]KiCadBomExport.py" "-i %I" [other cmd line params]```
     
-    eg: python "c:\KiCadBomExport.py" -i "%I" -g -f -a xxxxxxxx
+    eg: ```python "c:\KiCadBomExport.py" -i "%I" -g -f -a xxxxxxxx```
     Suggest you don't use the standard "%O" output file parameter, or the .xml output will overwrite the intermediate Netlist file.
 
 ### Usage with SupplyFrame's FindChips API
