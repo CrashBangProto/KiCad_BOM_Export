@@ -10,12 +10,12 @@ This is a simple script process the KiCad intermediate netlist file, and produce
 - Produces both CSV and XML output
 
 ### Command Line Parameters
-   -h / help   Display Help message
-   -g / group  Group like components into a single row
-   -i / input  Input file (in KiCad's intermediate XML format)
-   -o / output Output file name (will be appended with .CSV and .XML).  If none specified, output file is input file + "_BOM"
-   -f          Use the FindChips API
-   -a / apikey The API Key from the online costing service
+ * ```-h``` / ```-help```   Display Help message
+ * ```-g``` / ```-group```  Group like components into a single row
+ * ```-i``` / ```-input```  Input file (in KiCad's intermediate XML format)
+ * ```-o``` / ```-output``` Output file name (will be appended with .CSV and .XML).  If none specified, output file is input file + "_BOM"
+ * ```-f```           Use the FindChips API
+ * ```-a``` / ```-apikey``` The API Key from the online costing service
 
 
 ### Usage from within KiCad:
